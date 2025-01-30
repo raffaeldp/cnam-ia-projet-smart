@@ -7,6 +7,7 @@ from picsellia.types.enums import InferenceType
 
 from config import settings
 from src.data_downloader import DataDownloader
+from src.data_preprocessor import DataPreprocessor
 
 
 def main():
@@ -40,6 +41,10 @@ def main():
     # PHASE 1 : Récupération dataset / annotations YOLO
     data_downloader = DataDownloader(client, dataset)
     data_downloader.download()
+
+    # PHASE 2 : Prétraitement des données
+    data_preprocessor = DataPreprocessor()
+    data_preprocessor.pre_process()
 
 
     # dataset.set_type(type=InferenceType.OBJECT_DETECTION)
