@@ -8,6 +8,7 @@ from picsellia.types.enums import InferenceType
 from config import settings
 from src.data_downloader import DataDownloader
 from src.data_preprocessor import DataPreprocessor
+from src.data_trainer import DataTrainer
 
 
 def main():
@@ -38,20 +39,17 @@ def main():
 
     dataset = client.get_dataset_version_by_id(dataset_uuid)
 
-    # PHASE 1 : Récupération dataset / annotations YOLO
+    # PHASE 1 : Download data and annotations
     data_downloader = DataDownloader(client, dataset)
     data_downloader.download()
 
-    # PHASE 2 : Prétraitement des données
+    # PHASE 2 : Preprocessing
     data_preprocessor = DataPreprocessor()
     data_preprocessor.pre_process()
 
-
-    # dataset.set_type(type=InferenceType.OBJECT_DETECTION)
-    # dataset.import_annotations_yolo_files("", "./downloads/annotations")
-    # assets = dataset.list_assets()
-    #
-    # assets.download("./downloads/assets")
+    # PHASE 3 : Training
+    data_training = DataTrainer()
+    data_training.train()
 
 if __name__ == "__main__":
     main()

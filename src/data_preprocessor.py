@@ -28,6 +28,11 @@ class DataPreprocessor:
 
     def pre_process(self):
         print("Starting data pre-processing")
+
+        if os.path.exists(self.processed_folder_path):
+            print("Data already pre-processed")
+            return
+
         # Create processed directory if not exists
         self.ensure_folders_exists()
 
