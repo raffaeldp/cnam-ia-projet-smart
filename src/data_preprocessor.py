@@ -6,23 +6,23 @@ import yaml
 
 
 class DataPreprocessor:
-    processed_folder_path = "./dataset/processed"
+    processed_folder_path = "./datasets/processed"
     images_path = f"{processed_folder_path}/images"
     labels_path = f"{processed_folder_path}/labels"
 
     images_train_path = f"{images_path}/train"
-    images_validation_path = f"{images_path}/validation"
+    images_validation_path = f"{images_path}/val"
     images_test_path = f"{images_path}/test"
 
     labels_train_path = f"{labels_path}/train"
-    labels_validation_path = f"{labels_path}/validation"
+    labels_validation_path = f"{labels_path}/val"
     labels_test_path = f"{labels_path}/test"
 
     random.seed(42)
 
     split_ratio = {
         "train": 0.6,
-        "validation": 0.2,
+        "val": 0.2,
         "test": 0.2
     }
 
@@ -37,8 +37,8 @@ class DataPreprocessor:
         self.ensure_folders_exists()
 
         # Get all images and labels
-        images = glob("./dataset/images/*")
-        labels = glob("./dataset/annotations/*.txt")
+        images = glob("./datasets/images/*")
+        labels = glob("./datasets/annotations/*.txt")
 
         # Pair images and labels
         pair_images_labels = list(zip(images, labels))
@@ -46,7 +46,7 @@ class DataPreprocessor:
 
         # Split data
         train_index = int(len(pair_images_labels) * self.split_ratio["train"])
-        validation_index = int(len(pair_images_labels) * (self.split_ratio["train"] + self.split_ratio["validation"]))
+        validation_index = int(len(pair_images_labels) * (self.split_ratio["train"] + self.split_ratio["val"]))
 
         train_data = pair_images_labels[:train_index]
         validation_data = pair_images_labels[train_index:validation_index]
@@ -57,8 +57,8 @@ class DataPreprocessor:
         self.copy_images_and_labels(validation_data, self.images_validation_path, self.labels_validation_path)
         self.copy_images_and_labels(test_data, self.images_test_path, self.labels_test_path)
 
-        # Generate config.yaml file
-        self.generate_yaml_file("./dataset/config.yaml")
+        # Generate data.yaml file
+        self.generate_yaml_file("./datasets/data.yaml")
         print("Data pre-processing finished")
 
     def ensure_folders_exists(self):

@@ -8,7 +8,7 @@ from picsellia.types.enums import AnnotationFileType
 
 
 class DataDownloader:
-    dataset_path = "./dataset"
+    dataset_path = "./datasets"
     images_path = f"{dataset_path}/images"
     annotations_path = f"{dataset_path}/annotations"
 
@@ -19,7 +19,7 @@ class DataDownloader:
     def download(self):
         # Create download directory if not exists
         if not os.path.exists(self.dataset_path):
-            print("Creating dataset directory")
+            print("Creating datasets directory")
             os.makedirs(self.dataset_path)
 
         if os.listdir(self.dataset_path) and os.path.exists(self.images_path) and os.path.exists(self.annotations_path):
@@ -35,7 +35,7 @@ class DataDownloader:
             os.makedirs(self.images_path)
         if not os.listdir(self.images_path):
             print("Downloading images")
-            self.dataset.list_assets().download(self.images_path)
+            self.dataset.list_assets().download(self.images_path, use_id=True)
         else:
             print("Images already downloaded")
 
