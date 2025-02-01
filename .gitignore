@@ -3,6 +3,6 @@
 # Ignore dynaconf secret files
 .secrets.*
 
-datasets
+dataset
 runs
 *.pt

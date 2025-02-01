@@ -4,11 +4,13 @@ from glob import glob
 
 import yaml
 
+from src.data_downloader import DataDownloader
+
 
 class DataPreprocessor:
-    processed_folder_path = "./datasets/processed"
-    images_path = f"{processed_folder_path}/images"
-    labels_path = f"{processed_folder_path}/labels"
+    dataset_path = "./dataset/"
+    images_path = f"{dataset_path}/images"
+    labels_path = f"{dataset_path}/labels"
 
     images_train_path = f"{images_path}/train"
     images_validation_path = f"{images_path}/val"
@@ -17,6 +19,8 @@ class DataPreprocessor:
     labels_train_path = f"{labels_path}/train"
     labels_validation_path = f"{labels_path}/val"
     labels_test_path = f"{labels_path}/test"
+
+    config_path = f"{dataset_path}/config.yaml"
 
     random.seed(42)
 
@@ -29,7 +33,11 @@ class DataPreprocessor:
     def pre_process(self):
         print("Starting data pre-processing")
 
-        if os.path.exists(self.processed_folder_path):
+        if not os.path.exists(self.dataset_path) or not os.listdir(f"{self.dataset_path}/download/images") or not os.listdir(f"{self.dataset_path}/download/labels"):
+            print("Dataset not found. Download it first")
+            return
+
+        if os.path.exists(self.dataset_path) and os.path.exists(self.images_path) and os.path.exists(self.labels_path) and os.listdir(self.images_path) and os.listdir(self.labels_path):
             print("Data already pre-processed")
             return
 
@@ -37,8 +45,8 @@ class DataPreprocessor:
         self.ensure_folders_exists()
 
         # Get all images and labels
-        images = glob("./datasets/images/*")
-        labels = glob("./datasets/annotations/*.txt")
+        images = glob(f"{DataDownloader.images_path}/*")
+        labels = glob(f"{DataDownloader.labels_path}/*.txt")
 
         # Pair images and labels
         pair_images_labels = list(zip(images, labels))
@@ -58,13 +66,11 @@ class DataPreprocessor:
         self.copy_images_and_labels(test_data, self.images_test_path, self.labels_test_path)
 
         # Generate data.yaml file
-        self.generate_yaml_file("./datasets/data.yaml")
+        self.generate_yaml_file(self.config_path)
         print("Data pre-processing finished")
 
     def ensure_folders_exists(self):
-        os.makedirs(self.processed_folder_path, exist_ok=True)
-        os.makedirs(self.images_path, exist_ok=True)
-        os.makedirs(self.labels_path, exist_ok=True)
+        os.makedirs(self.dataset_path, exist_ok=True)
 
         os.makedirs(self.images_train_path, exist_ok=True)
         os.makedirs(self.images_validation_path, exist_ok=True)
@@ -87,9 +93,9 @@ class DataPreprocessor:
 
     def generate_yaml_file(self, result_path):
         data = {
-            "train": f"{self.images_train_path}",
-            "val": f"{self.images_validation_path}",
-            "test": f"{self.images_test_path}",
+            "train": "./images/train",
+            "val": "./images/val",
+            "test": "./images/test",
             "nc": 10,  # Classes count
             "names": [
                 "mikado",

@@ -40,13 +40,13 @@ def main():
 
     dataset = client.get_dataset_version_by_id(dataset_uuid)
 
-    # # PHASE 1 : Download data and annotations
-    # data_downloader = DataDownloader(client, dataset)
-    # data_downloader.download()
+    # PHASE 1 : Download data and annotations
+    data_downloader = DataDownloader(client, dataset)
+    data_downloader.download()
     #
-    # # PHASE 2 : Preprocessing
-    # data_preprocessor = DataPreprocessor()
-    # data_preprocessor.pre_process()
+    # PHASE 2 : Preprocessing
+    data_preprocessor = DataPreprocessor()
+    data_preprocessor.pre_process()
 
     # PHASE 3 : Training
     data_training = DataTrainer()
