@@ -6,3 +6,5 @@
 dataset
 runs
 *.pt
+__pycache__
+src/__pycache__

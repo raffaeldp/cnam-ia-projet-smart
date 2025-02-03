@@ -24,13 +24,12 @@ class DataTrainer:
             data=config_path,
             device="mps",
             imgsz=640,
-            epochs=50,
+            epochs=200,
             batch=16,
             close_mosaic=False,
             optimizer="adamW",
             seed=42,
             lr0=0.001,
-            lrf=0.001,
         )
 
         # Evaluate the model's performance on the val set
