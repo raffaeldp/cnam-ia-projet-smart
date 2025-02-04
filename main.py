@@ -4,7 +4,7 @@ from uuid import UUID
 
 from pandas.core.interchange.dataframe_protocol import DataFrame
 from picsellia import Client
-from picsellia.types.enums import InferenceType
+from picsellia.types.enums import InferenceType, JobStatus
 
 from config import settings
 from src.data_downloader import DataDownloader
@@ -49,8 +49,10 @@ def main():
     data_preprocessor.pre_process()
 
     # PHASE 3 : Training
-    data_training = DataTrainer()
+    data_training = DataTrainer(experiment)
     data_training.train()
+
+    experiment.update_job_status(status=JobStatus.SUCCESS)
 
 if __name__ == "__main__":
     main()
