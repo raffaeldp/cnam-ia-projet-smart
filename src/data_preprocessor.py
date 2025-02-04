@@ -1,6 +1,7 @@
 import os
 import random
 from glob import glob
+import shutil
 
 import yaml
 
@@ -88,8 +89,9 @@ class DataPreprocessor:
             image_dst = f"{images_path}/{image_name}"
             label_dst = f"{labels_path}/{label_name}"
 
-            os.system(f"cp {image} {image_dst}")
-            os.system(f"cp {label} {label_dst}")
+            shutil.copy(image, image_dst)
+            shutil.copy(label, label_dst)
+
 
     def generate_yaml_file(self, result_path):
         data = {
