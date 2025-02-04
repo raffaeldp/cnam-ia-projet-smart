@@ -5,6 +5,7 @@ import yaml
 from torch.xpu import device
 from ultralytics import YOLO
 
+from config import settings
 from src.data_preprocessor import DataPreprocessor
 
 
@@ -22,9 +23,9 @@ class DataTrainer:
 
         results = model.train(
             data=config_path,
-            device="mps",
+            device=settings.get("training_device"),
             imgsz=640,
-            epochs=200,
+            epochs=50,
             batch=16,
             close_mosaic=False,
             optimizer="adamW",
