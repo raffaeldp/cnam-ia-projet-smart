@@ -4,10 +4,11 @@ from uuid import UUID
 
 from pandas.core.interchange.dataframe_protocol import DataFrame
 from picsellia import Client
-from picsellia.types.enums import InferenceType, JobStatus
+from picsellia.types.enums import InferenceType, JobStatus, ExperimentStatus
 
 from config import settings
 from src.data_downloader import DataDownloader
+from src.data_postprocessor import DataPostprocessor
 from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
 
@@ -52,7 +53,11 @@ def main():
     data_training = DataTrainer(experiment)
     data_training.train()
 
-    experiment.update_job_status(status=JobStatus.SUCCESS)
+    # PHASE 4 : Post-processing
+    data_postprocessor = DataPostprocessor(experiment, data_training.model)
+    data_postprocessor.eval()
+
+    experiment.update(status=ExperimentStatus.SUCCESS)
 
 if __name__ == "__main__":
     main()

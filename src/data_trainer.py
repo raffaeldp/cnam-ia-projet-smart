@@ -14,37 +14,33 @@ class PicselliaCallback:
         self.experiment = experiment
 
     def on_train_epoch_end(self, trainer: DetectionTrainer):
-        print(str(trainer.metrics))
-        self.experiment.log(str(trainer.epoch), "test", LogType.LINE)
+        for key, value in trainer.metrics.items():
+            self.experiment.log(f"{trainer.epoch}_{key}", value, LogType.VALUE)
 
 
 class DataTrainer:
     def __init__(self, experiment: Experiment):
         self.experiment = experiment
+        self.model = YOLO("yolo11s.pt")
+
+        self.callback = PicselliaCallback(self.experiment)
+        self.model.add_callback("on_train_epoch_end", self.callback.on_train_epoch_end)
+
 
     def train(self):
         print("Starting data training")
-        # Load the model
-        model = YOLO("yolo11s.pt")
-
-        callback = PicselliaCallback(self.experiment)
-
-        model.add_callback("on_train_epoch_end",callback.on_train_epoch_end)
 
         # Train the model using the 'data.yaml' datasets for 3 epochs
         config_path = Path(DataPreprocessor.config_path).resolve()
 
-        results = model.train(
+        results = self.model.train(
             data=config_path,
             device=settings.get("training_device"),
             imgsz=640,
-            epochs=50,
+            epochs=2,
             batch=16,
             close_mosaic=False,
             optimizer="adamW",
             seed=42,
             lr0=0.001,
         )
-
-        # Evaluate the model's performance on the val set
-        results = model.val()
