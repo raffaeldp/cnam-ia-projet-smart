@@ -11,6 +11,7 @@ from src.data_downloader import DataDownloader
 from src.data_postprocessor import DataPostprocessor
 from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
+from src.inference_webcam import InferenceWebcam
 
 
 def main():
@@ -58,6 +59,10 @@ def main():
     data_postprocessor.eval()
 
     experiment.update(status=ExperimentStatus.SUCCESS)
+
+    # Inference
+    #  inference = InferenceWebcam()
+    # inference.start_inference()
 
 if __name__ == "__main__":
     main()

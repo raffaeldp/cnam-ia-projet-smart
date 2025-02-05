@@ -1,3 +1,4 @@
 ultralytics
 picsellia
 dynaconf
+opencv-python
