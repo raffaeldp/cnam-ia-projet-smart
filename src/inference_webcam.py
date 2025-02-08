@@ -30,6 +30,7 @@ class InferenceWebcam:
 
         while True:
             success, img = cap.read()
+            img = cv2.flip(img, 1)
             results = model(img, stream=True)
 
             # coordinates
@@ -46,7 +47,6 @@ class InferenceWebcam:
 
                     # confidence
                     confidence = math.ceil((box.conf[0]*100))/100
-                    print("Confidence --->",confidence)
 
                     # class name
                     cls = int(box.cls[0])
@@ -59,7 +59,7 @@ class InferenceWebcam:
                     color = (255, 0, 0)
                     thickness = 2
 
-                    cv2.putText(img, classNames[cls], org, font, fontScale, color, thickness)
+                    cv2.putText(img, f"{classNames[cls]}-{confidence}", org, font, fontScale, color, thickness)
 
             cv2.imshow('Webcam', img)
             if cv2.waitKey(1) == ord('q'):
