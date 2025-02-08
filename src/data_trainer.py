@@ -8,6 +8,8 @@ from ultralytics.models.yolo.detect import DetectionTrainer
 
 from config import settings
 from src.data_preprocessor import DataPreprocessor
+from src.utils import get_model_device
+
 
 class PicselliaCallback:
     def __init__(self, experiment: Experiment):
@@ -35,7 +37,7 @@ class DataTrainer:
 
         results = self.model.train(
             data=config_path,
-            device=settings.get("training_device"),
+            device=get_model_device(),
             imgsz=640,
             epochs=2,
             batch=16,

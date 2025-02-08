@@ -1,18 +1,16 @@
 import argparse
-import os
-from pathlib import Path
 from uuid import UUID
 
-from pandas.core.interchange.dataframe_protocol import DataFrame
 from picsellia import Client
-from picsellia.types.enums import InferenceType, JobStatus, ExperimentStatus
+from picsellia.types.enums import ExperimentStatus
 
 from config import settings
 from src.data_downloader import DataDownloader
 from src.data_postprocessor import DataPostprocessor
 from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
-from src.inference_webcam import InferenceWebcam
+from src.inference_webcam import start_inference, InferenceMode
+
 
 def train():
     organization_id = UUID(settings.get("organization_id"))
@@ -62,14 +60,13 @@ def train():
 
 def infer_webcam():
     # Inference
-    inference = InferenceWebcam()
-    inference.start_inference()
+    start_inference(InferenceMode.WEBCAM)
 
 def infer_image(path: str):
-    pass
+    start_inference(InferenceMode.IMAGE, path)
 
 def infer_video(path: str):
-    pass
+    start_inference(InferenceMode.VIDEO, path)
 
 
 if __name__ == "__main__":
