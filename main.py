@@ -60,25 +60,45 @@ def train():
     experiment.update(status=ExperimentStatus.SUCCESS)
 
 
-def infer():
+def infer_webcam():
     # Inference
     inference = InferenceWebcam()
     inference.start_inference()
+
+def infer_image(path: str):
+    pass
+
+def infer_video(path: str):
+    pass
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script pour entraîner ou exécuter l'inférence d'un modèle.")
 
     parser.add_argument("--train", action="store_true", help="Lancer l'entraînement du modèle")
-    parser.add_argument("--infer", action="store_true", help="Lancer l'inférence")
+
+    # Inference options
+    parser.add_argument("--infer", choices=["webcam", "image", "video"], help="Mode d'inférence")
+    parser.add_argument("--path", type=str, help="Chemin du fichier (requis pour image et vidéo)")
 
     args = parser.parse_args()
 
     if args.train:
         train()
     elif args.infer:
-        infer()
+        if args.infer == "webcam":
+            infer_webcam()
+        elif args.infer == "image":
+            if args.path:
+                infer_image(args.path)
+            else:
+                print("Erreur: --path est requis pour l'inférence sur une image.")
+        elif args.infer == "video":
+            if args.path:
+                infer_video(args.path)
+            else:
+                print("Erreur: --path est requis pour l'inférence sur une vidéo.")
     else:
-        print("Veuillez spécifier --train ou --infer")
+        print("Veuillez spécifier --train ou --infer [webcam/image/video].")
 
 
