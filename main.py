@@ -1,3 +1,4 @@
+import argparse
 import os
 from pathlib import Path
 from uuid import UUID
@@ -13,13 +14,11 @@ from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
 from src.inference_webcam import InferenceWebcam
 
-
-def main():
+def train():
     organization_id = UUID(settings.get("organization_id"))
     api_token = settings.get("api_token")
     dataset_uuid = settings.get("dataset_uuid")
     project_name = settings.get("project_name")
-
 
     # Picsellia login
     client = Client(api_token=api_token, organization_id=organization_id)
@@ -60,10 +59,26 @@ def main():
 
     experiment.update(status=ExperimentStatus.SUCCESS)
 
+
+def infer():
     # Inference
-    #  inference = InferenceWebcam()
-    # inference.start_inference()
+    inference = InferenceWebcam()
+    inference.start_inference()
+
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Script pour entraîner ou exécuter l'inférence d'un modèle.")
+
+    parser.add_argument("--train", action="store_true", help="Lancer l'entraînement du modèle")
+    parser.add_argument("--infer", action="store_true", help="Lancer l'inférence")
+
+    args = parser.parse_args()
+
+    if args.train:
+        train()
+    elif args.infer:
+        infer()
+    else:
+        print("Veuillez spécifier --train ou --infer")
+
 
