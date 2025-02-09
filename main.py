@@ -1,8 +1,6 @@
 import argparse
-from uuid import UUID
 
 from datetime import datetime
-from picsellia import Client
 from picsellia.types.enums import ExperimentStatus
 
 from config import settings
@@ -10,7 +8,8 @@ from src.data_downloader import DataDownloader
 from src.data_postprocessor import DataPostprocessor
 from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
-from src.inference import start_inference, InferenceMode
+from src.inference import InferenceMode, ImageProcessor
+from src.picsellia_connector import PicselliaConnector
 
 
 def train():
@@ -23,15 +22,13 @@ def train():
     5. Trains the model.
     6. Evaluates and saves the model to Picsellia.
     """
-    organization_id = UUID(settings.get("organization_id"))
-    api_token = settings.get("api_token")
     dataset_uuid = settings.get("dataset_uuid")
-    project_name = settings.get("project_name")
 
     # Picsellia login
-    client = Client(api_token=api_token, organization_id=organization_id)
-    project = client.get_project(project_name)
-    model = client.get_model_by_id(settings.get("model_id"))
+    picselliaConnector = PicselliaConnector()
+    client = picselliaConnector.get_client()
+    project = picselliaConnector.get_project()
+    model = picselliaConnector.get_model()
 
     experiment_name = "training_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
     project_experiments = project.list_experiments()
@@ -72,8 +69,8 @@ def infer_webcam():
     """
     Performs inference using the webcam.
     """
-    # Inference
-    start_inference(InferenceMode.WEBCAM)
+    imageProcessor = ImageProcessor()
+    imageProcessor.start_inference(InferenceMode.WEBCAM)
 
 
 def infer_image(path: str):
@@ -83,7 +80,8 @@ def infer_image(path: str):
     Args:
         path (str): The path to the image file.
     """
-    start_inference(InferenceMode.IMAGE, path)
+    imageProcessor = ImageProcessor()
+    imageProcessor.start_inference(InferenceMode.IMAGE, path)
 
 
 def infer_video(path: str):
@@ -93,7 +91,8 @@ def infer_video(path: str):
     Args:
         path (str): The path to the video file.
     """
-    start_inference(InferenceMode.VIDEO, path)
+    imageProcessor = ImageProcessor()
+    imageProcessor.start_inference(InferenceMode.VIDEO, path)
 
 
 if __name__ == "__main__":

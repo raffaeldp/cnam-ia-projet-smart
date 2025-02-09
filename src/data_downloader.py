@@ -3,7 +3,7 @@ import shutil
 import zipfile
 
 from config import settings
-from picsellia import Client, Dataset, DatasetVersion
+from picsellia import Client, DatasetVersion
 from picsellia.types.enums import AnnotationFileType
 
 

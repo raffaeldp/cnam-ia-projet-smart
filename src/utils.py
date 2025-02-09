@@ -1,5 +1,7 @@
 import platform
 
+import torch
+
 
 def get_model_device() -> str:
     """
@@ -8,4 +10,8 @@ def get_model_device() -> str:
     Returns:
         str: 'mps' if the operating system is macOS, otherwise 'cuda'.
     """
-    return "mps" if platform.system() == "Darwin" else "cuda"
+    return (
+        "mps"
+        if platform.system() == "Darwin"
+        else "cuda" if torch.cuda.is_available() else "cpu"
+    )
