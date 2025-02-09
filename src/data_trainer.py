@@ -23,7 +23,7 @@ class PicselliaCallback:
 class DataTrainer:
     def __init__(self, experiment: Experiment):
         self.experiment = experiment
-        self.model = YOLO("yolo11s.pt")
+        self.model = YOLO("yolo11n.pt")
 
         self.callback = PicselliaCallback(self.experiment)
         self.model.add_callback("on_train_epoch_end", self.callback.on_train_epoch_end)
@@ -39,7 +39,7 @@ class DataTrainer:
             data=config_path,
             device=get_model_device(),
             imgsz=640,
-            epochs=2,
+            epochs=1,
             batch=16,
             close_mosaic=False,
             optimizer="adamW",

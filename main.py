@@ -1,6 +1,8 @@
 import argparse
 from uuid import UUID
 
+from pandas.core.interchange.dataframe_protocol import DataFrame
+from datetime import datetime
 from picsellia import Client
 from picsellia.types.enums import ExperimentStatus
 
@@ -21,11 +23,9 @@ def train():
     # Picsellia login
     client = Client(api_token=api_token, organization_id=organization_id)
     project = client.get_project(project_name)
+    model = client.get_model_by_id(settings.get("model_id"))
 
-    # Experiment management
-    # For now, we will just create one experiment and reset it over and over.
-    # Later we may want to have multiple experiments for hyperparameters comparison purposes I guess.
-    experiment_name = "experiment"
+    experiment_name = "training_" + datetime.today().strftime('%Y-%m-%d')
     project_experiments = project.list_experiments()
     for experiment in project_experiments:
         if experiment.name == experiment_name:
@@ -54,6 +54,7 @@ def train():
     # PHASE 4 : Post-processing
     data_postprocessor = DataPostprocessor(experiment, data_training.model)
     data_postprocessor.eval()
+    data_postprocessor.save_to_picsellia(model)
 
     experiment.update(status=ExperimentStatus.SUCCESS)
 
