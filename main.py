@@ -25,7 +25,7 @@ def train():
     project = client.get_project(project_name)
     model = client.get_model_by_id(settings.get("model_id"))
 
-    experiment_name = "training_" + datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
+    experiment_name = "training_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S')
     project_experiments = project.list_experiments()
     for experiment in project_experiments:
         if experiment.name == experiment_name:
@@ -54,7 +54,8 @@ def train():
     # PHASE 4 : Post-processing
     data_postprocessor = DataPostprocessor(experiment, data_training.model)
     data_postprocessor.eval()
-    data_postprocessor.save_to_picsellia(model)
+    data_postprocessor.save()
+    data_postprocessor.upload_to_picsellia(model)
 
     experiment.update(status=ExperimentStatus.SUCCESS)
 
