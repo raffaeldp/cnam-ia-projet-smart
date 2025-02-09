@@ -10,7 +10,9 @@ class InferenceMode(Enum):
     VIDEO = 2
 
 
-def start_inference(mode: InferenceMode = InferenceMode.WEBCAM, path: str = None):
+def start_inference(
+    mode: InferenceMode = InferenceMode.WEBCAM, path: str = None
+) -> None:
     model = YOLO("../weights/best.pt")
 
     if mode == InferenceMode.WEBCAM:

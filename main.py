@@ -10,10 +10,10 @@ from src.data_downloader import DataDownloader
 from src.data_postprocessor import DataPostprocessor
 from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
-from src.inference_webcam import start_inference, InferenceMode
+from src.inference import start_inference, InferenceMode
 
 
-def train():
+def train() -> None:
     organization_id = UUID(settings.get("organization_id"))
     api_token = settings.get("api_token")
     dataset_uuid = settings.get("dataset_uuid")
@@ -58,22 +58,22 @@ def train():
     experiment.update(status=ExperimentStatus.SUCCESS)
 
 
-def infer_webcam():
+def infer_webcam() -> None:
     # Inference
     start_inference(InferenceMode.WEBCAM)
 
 
-def infer_image(path: str):
+def infer_image(path: str) -> None:
     start_inference(InferenceMode.IMAGE, path)
 
 
-def infer_video(path: str):
+def infer_video(path: str) -> None:
     start_inference(InferenceMode.VIDEO, path)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Script pour entraîner ou exécuter l'inférence d'un modèle.."
+        description="Script pour entraîner ou " + "exécuter l'inférence d'un modèle.."
     )
 
     parser.add_argument(

@@ -4,18 +4,18 @@ from ultralytics.models.yolo.model import YOLO
 
 
 class DataPostprocessor:
-    def __init__(self, experiment: Experiment, yolo: YOLO):
+    def __init__(self, experiment: Experiment, yolo: YOLO) -> None:
         self.yolo = yolo
         self.experiment = experiment
 
-    def eval(self):
+    def eval(self) -> None:
         print("Starting evaluation")
         results = self.yolo.val()
 
         for key, value in results.results_dict.items():
             self.experiment.log(f"result_{key}", str(value), LogType.VALUE)
 
-    def save_to_picsellia(self, model: Model):
+    def save_to_picsellia(self, model: Model) -> None:
         print("Saving model...")
 
         self.yolo.save("best.pt")

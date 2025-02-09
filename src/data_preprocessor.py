@@ -27,7 +27,7 @@ class DataPreprocessor:
 
     split_ratio = {"train": 0.6, "val": 0.2, "test": 0.2}
 
-    def pre_process(self):
+    def pre_process(self) -> None:
         print("Starting data pre-processing")
 
         if (
@@ -85,7 +85,7 @@ class DataPreprocessor:
         self.generate_yaml_file(self.config_path)
         print("Data pre-processing finished")
 
-    def ensure_folders_exists(self):
+    def ensure_folders_exists(self) -> None:
         os.makedirs(self.dataset_path, exist_ok=True)
 
         os.makedirs(self.images_train_path, exist_ok=True)
@@ -96,7 +96,7 @@ class DataPreprocessor:
         os.makedirs(self.labels_validation_path, exist_ok=True)
         os.makedirs(self.labels_test_path, exist_ok=True)
 
-    def copy_images_and_labels(self, data, images_path, labels_path):
+    def copy_images_and_labels(self, data, images_path, labels_path) -> None:
         for image, label in data:
             image_name = os.path.basename(image)
             label_name = os.path.basename(label)
@@ -107,7 +107,7 @@ class DataPreprocessor:
             shutil.copy(image, image_dst)
             shutil.copy(label, label_dst)
 
-    def generate_yaml_file(self, result_path):
+    def generate_yaml_file(self, result_path) -> None:
         data = {
             "train": "./images/train",
             "val": "./images/val",

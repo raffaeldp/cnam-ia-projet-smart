@@ -12,11 +12,11 @@ class DataDownloader:
     images_path = f"{dataset_download_path}/images"
     labels_path = f"{dataset_download_path}/labels"
 
-    def __init__(self, client: Client, dataset: DatasetVersion):
+    def __init__(self, client: Client, dataset: DatasetVersion) -> None:
         self.client = client
         self.dataset = dataset
 
-    def download(self):
+    def download(self) -> None:
         # Create download directory if not exists
         if not os.path.exists(self.dataset_download_path):
             print("Creating datasets directory")
@@ -33,7 +33,7 @@ class DataDownloader:
         self._download_images()
         self._download_labels()
 
-    def _download_images(self):
+    def _download_images(self) -> None:
         # Create images directory if not exists
         if not os.path.exists(self.images_path):
             os.makedirs(self.images_path)
@@ -46,7 +46,7 @@ class DataDownloader:
         self.dataset.list_assets().download(self.images_path, use_id=True)
         print("Images downloaded")
 
-    def _download_labels(self):
+    def _download_labels(self) -> None:
         # Create labels directory if not exists
         if not os.path.exists(self.labels_path):
             os.makedirs(self.labels_path)
