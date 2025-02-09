@@ -73,7 +73,7 @@ def infer_video(path: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Script pour entraîner ou exécuter l'inférence d'un modèle."
+        description="Script pour entraîner ou exécuter l'inférence d'un modèle.."
     )
 
     parser.add_argument(
