@@ -14,6 +14,15 @@ from src.inference import start_inference, InferenceMode
 
 
 def train() -> None:
+    """
+    Trains the model by performing the following steps:
+    1. Logs into Picsellia.
+    2. Creates a new experiment.
+    3. Downloads the dataset and annotations.
+    4. Preprocesses the data.
+    5. Trains the model.
+    6. Evaluates and saves the model to Picsellia.
+    """
     organization_id = UUID(settings.get("organization_id"))
     api_token = settings.get("api_token")
     dataset_uuid = settings.get("dataset_uuid")
@@ -59,21 +68,35 @@ def train() -> None:
 
 
 def infer_webcam() -> None:
-    # Inference
+    """
+    Performs inference using the webcam.
+    """
     start_inference(InferenceMode.WEBCAM)
 
 
 def infer_image(path: str) -> None:
+    """
+    Performs inference on a given image.
+
+    Args:
+        path (str): The path to the image file.
+    """
     start_inference(InferenceMode.IMAGE, path)
 
 
 def infer_video(path: str) -> None:
+    """
+    Performs inference on a given video.
+
+    Args:
+        path (str): The path to the video file.
+    """
     start_inference(InferenceMode.VIDEO, path)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Script pour entraîner ou " + "exécuter l'inférence d'un modèle.."
+        description="Script pour entraîner ou exécuter l'inférence d'un modèle.."
     )
 
     parser.add_argument(

@@ -9,6 +9,23 @@ from src.data_downloader import DataDownloader
 
 
 class DataPreprocessor:
+    """
+    Class to handle the preprocessing of data, including splitting datasets and generating configuration files.
+
+    Attributes:
+        dataset_path (str): Path to the dataset directory.
+        images_path (str): Path to the images directory.
+        labels_path (str): Path to the labels directory.
+        images_train_path (str): Path to the training images directory.
+        images_validation_path (str): Path to the validation images directory.
+        images_test_path (str): Path to the test images directory.
+        labels_train_path (str): Path to the training labels directory.
+        labels_validation_path (str): Path to the validation labels directory.
+        labels_test_path (str): Path to the test labels directory.
+        config_path (str): Path to the configuration file.
+        split_ratio (dict): Dictionary containing the split ratios for train, validation, and test datasets.
+    """
+
     dataset_path = "./dataset/"
     images_path = f"{dataset_path}/images"
     labels_path = f"{dataset_path}/labels"
@@ -28,6 +45,9 @@ class DataPreprocessor:
     split_ratio = {"train": 0.6, "val": 0.2, "test": 0.2}
 
     def pre_process(self) -> None:
+        """
+        Preprocesses the data by splitting it into train, validation, and test sets, and generating a configuration file.
+        """
         print("Starting data pre-processing")
 
         if (
@@ -86,6 +106,9 @@ class DataPreprocessor:
         print("Data pre-processing finished")
 
     def ensure_folders_exists(self) -> None:
+        """
+        Ensures that the necessary directories for storing processed data exist.
+        """
         os.makedirs(self.dataset_path, exist_ok=True)
 
         os.makedirs(self.images_train_path, exist_ok=True)
@@ -97,6 +120,14 @@ class DataPreprocessor:
         os.makedirs(self.labels_test_path, exist_ok=True)
 
     def copy_images_and_labels(self, data, images_path, labels_path) -> None:
+        """
+        Copies images and labels to the specified directories.
+
+        Args:
+            data (list): List of tuples containing image and label file paths.
+            images_path (str): Path to the directory where images will be copied.
+            labels_path (str): Path to the directory where labels will be copied.
+        """
         for image, label in data:
             image_name = os.path.basename(image)
             label_name = os.path.basename(label)
@@ -108,6 +139,12 @@ class DataPreprocessor:
             shutil.copy(label, label_dst)
 
     def generate_yaml_file(self, result_path) -> None:
+        """
+        Generates a YAML configuration file for the dataset.
+
+        Args:
+            result_path (str): Path to the resulting YAML file.
+        """
         data = {
             "train": "./images/train",
             "val": "./images/val",
