@@ -21,7 +21,7 @@ class DataPostprocessor:
 
         labels: dict = {
             str(index): label.name for index, label in
-                        enumerate(self.experiment.get_dataset("Dataset").list_labels())}
+                        enumerate(self.experiment.get_dataset("cnam_products_2024").list_labels())}
 
         version = model.create_version(
             labels=labels,

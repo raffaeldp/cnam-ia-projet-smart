@@ -17,7 +17,10 @@ class PicselliaCallback:
 
     def on_train_epoch_end(self, trainer: DetectionTrainer):
         for key, value in trainer.metrics.items():
-            self.experiment.log(f"{trainer.epoch}_{key}", value, LogType.VALUE)
+            try:
+                self.experiment.log(f"{trainer.epoch}_{key}", value, LogType.VALUE)
+            except Exception as e:
+                print(e)
 
 
 class DataTrainer:
