@@ -25,7 +25,7 @@ def train():
     project = client.get_project(project_name)
     model = client.get_model_by_id(settings.get("model_id"))
 
-    experiment_name = "training_" + datetime.today().strftime('%Y-%m-%d')
+    experiment_name = "training_" + datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
     project_experiments = project.list_experiments()
     for experiment in project_experiments:
         if experiment.name == experiment_name:
