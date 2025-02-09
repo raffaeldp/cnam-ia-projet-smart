@@ -31,6 +31,15 @@ class ImageProcessor:
     __model_latest_file_path = f"{__model_download_directory_path}/latest"
 
     def __select_model_version_idx(self, model: Model) -> int:
+        """
+        Prompts the user to select a model version from the available versions.
+
+        Args:
+            model (Model): The model object to list versions from.
+
+        Returns:
+            int: The index of the selected model version.
+        """
         model_versions: list[ModelVersion] = model.list_versions()
         print("Here is the available versions :")
         model_versions_with_files = []
@@ -54,6 +63,15 @@ class ImageProcessor:
         return int(versionIdx)
 
     def __select_model_file(self, model_version: ModelVersion) -> ModelFile:
+        """
+        Prompts the user to select a model file from the available files in the selected model version.
+
+        Args:
+            model_version (ModelVersion): The model version object to list files from.
+
+        Returns:
+            ModelFile: The selected model file.
+        """
         model_files: list[ModelFile] = model_version.list_files()
         print("Here is the available files :")
         for index, model_file in enumerate(model_files):
@@ -66,6 +84,13 @@ class ImageProcessor:
         return model_files[int(fileIdx)]
 
     def __download_model(self, model_version: ModelVersion, model_file: ModelFile):
+        """
+        Downloads and extracts the selected model file.
+
+        Args:
+            model_version (ModelVersion): The selected model version.
+            model_file (ModelFile): The selected model file.
+        """
         # Delete best.pt file if it exists
         if os.path.exists(self.__model_file_path):
             os.remove(self.__model_file_path)
