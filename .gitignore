@@ -5,6 +5,7 @@
 
 dataset
 runs
+weights
 *.pt
 __pycache__
 src/__pycache__
