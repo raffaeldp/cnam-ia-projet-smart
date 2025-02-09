@@ -13,7 +13,7 @@ from src.data_trainer import DataTrainer
 from src.inference import start_inference, InferenceMode
 
 
-def train() -> None:
+def train():
     """
     Trains the model by performing the following steps:
     1. Logs into Picsellia.
@@ -33,7 +33,7 @@ def train() -> None:
     project = client.get_project(project_name)
     model = client.get_model_by_id(settings.get("model_id"))
 
-    experiment_name = "training_" + datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
+    experiment_name = "training_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
     project_experiments = project.list_experiments()
     for experiment in project_experiments:
         if experiment.name == experiment_name:
@@ -62,19 +62,21 @@ def train() -> None:
     # PHASE 4 : Post-processing
     data_postprocessor = DataPostprocessor(experiment, data_training.model)
     data_postprocessor.eval()
-    data_postprocessor.save_to_picsellia(model)
+    data_postprocessor.save()
+    data_postprocessor.upload_to_picsellia(model)
 
     experiment.update(status=ExperimentStatus.SUCCESS)
 
 
-def infer_webcam() -> None:
+def infer_webcam():
     """
     Performs inference using the webcam.
     """
+    # Inference
     start_inference(InferenceMode.WEBCAM)
 
 
-def infer_image(path: str) -> None:
+def infer_image(path: str):
     """
     Performs inference on a given image.
 
@@ -84,7 +86,7 @@ def infer_image(path: str) -> None:
     start_inference(InferenceMode.IMAGE, path)
 
 
-def infer_video(path: str) -> None:
+def infer_video(path: str):
     """
     Performs inference on a given video.
 
@@ -96,7 +98,7 @@ def infer_video(path: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Script pour entraîner ou exécuter l'inférence d'un modèle.."
+        description="Script pour entraîner ou exécuter l'inférence d'un modèle."
     )
 
     parser.add_argument(
