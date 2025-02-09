@@ -1,6 +1,7 @@
 from picsellia import Experiment, Model
 from picsellia.types.enums import LogType, Framework, InferenceType
-from ultralytics. models. yolo. model import YOLO
+from ultralytics.models.yolo.model import YOLO
+
 
 class DataPostprocessor:
     def __init__(self, experiment: Experiment, yolo: YOLO):
@@ -20,8 +21,11 @@ class DataPostprocessor:
         self.yolo.save("best.pt")
 
         labels: dict = {
-            str(index): label.name for index, label in
-                        enumerate(self.experiment.get_dataset("cnam_products_2024").list_labels())}
+            str(index): label.name
+            for index, label in enumerate(
+                self.experiment.get_dataset("cnam_products_2024").list_labels()
+            )
+        }
 
         version = model.create_version(
             labels=labels,

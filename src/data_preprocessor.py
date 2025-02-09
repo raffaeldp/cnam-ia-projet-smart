@@ -25,20 +25,26 @@ class DataPreprocessor:
 
     random.seed(42)
 
-    split_ratio = {
-        "train": 0.6,
-        "val": 0.2,
-        "test": 0.2
-    }
+    split_ratio = {"train": 0.6, "val": 0.2, "test": 0.2}
 
     def pre_process(self):
         print("Starting data pre-processing")
 
-        if not os.path.exists(self.dataset_path) or not os.listdir(f"{self.dataset_path}/download/images") or not os.listdir(f"{self.dataset_path}/download/labels"):
+        if (
+            not os.path.exists(self.dataset_path)
+            or not os.listdir(f"{self.dataset_path}/download/images")
+            or not os.listdir(f"{self.dataset_path}/download/labels")
+        ):
             print("Dataset not found. Download it first")
             return
 
-        if os.path.exists(self.dataset_path) and os.path.exists(self.images_path) and os.path.exists(self.labels_path) and os.listdir(self.images_path) and os.listdir(self.labels_path):
+        if (
+            os.path.exists(self.dataset_path)
+            and os.path.exists(self.images_path)
+            and os.path.exists(self.labels_path)
+            and os.listdir(self.images_path)
+            and os.listdir(self.labels_path)
+        ):
             print("Data already pre-processed")
             return
 
@@ -55,16 +61,25 @@ class DataPreprocessor:
 
         # Split data
         train_index = int(len(pair_images_labels) * self.split_ratio["train"])
-        validation_index = int(len(pair_images_labels) * (self.split_ratio["train"] + self.split_ratio["val"]))
+        validation_index = int(
+            len(pair_images_labels)
+            * (self.split_ratio["train"] + self.split_ratio["val"])
+        )
 
         train_data = pair_images_labels[:train_index]
         validation_data = pair_images_labels[train_index:validation_index]
         test_data = pair_images_labels[validation_index:]
 
         # Copy images and labels to the right folder
-        self.copy_images_and_labels(train_data, self.images_train_path, self.labels_train_path)
-        self.copy_images_and_labels(validation_data, self.images_validation_path, self.labels_validation_path)
-        self.copy_images_and_labels(test_data, self.images_test_path, self.labels_test_path)
+        self.copy_images_and_labels(
+            train_data, self.images_train_path, self.labels_train_path
+        )
+        self.copy_images_and_labels(
+            validation_data, self.images_validation_path, self.labels_validation_path
+        )
+        self.copy_images_and_labels(
+            test_data, self.images_test_path, self.labels_test_path
+        )
 
         # Generate data.yaml file
         self.generate_yaml_file(self.config_path)
@@ -92,7 +107,6 @@ class DataPreprocessor:
             shutil.copy(image, image_dst)
             shutil.copy(label, label_dst)
 
-
     def generate_yaml_file(self, result_path):
         data = {
             "train": "./images/train",
@@ -115,4 +129,3 @@ class DataPreprocessor:
         with open(result_path, "w") as yaml_file:
             yaml.dump(data, yaml_file)
         print(f"Yaml file generated : {result_path}")
-

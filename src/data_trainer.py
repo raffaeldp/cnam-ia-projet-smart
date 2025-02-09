@@ -31,7 +31,6 @@ class DataTrainer:
         self.callback = PicselliaCallback(self.experiment)
         self.model.add_callback("on_train_epoch_end", self.callback.on_train_epoch_end)
 
-
     def train(self):
         print("Starting data training")
 

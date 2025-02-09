@@ -22,7 +22,11 @@ class DataDownloader:
             print("Creating datasets directory")
             os.makedirs(self.dataset_download_path)
 
-        if os.listdir(self.dataset_download_path) and os.path.exists(self.images_path) and os.path.exists(self.labels_path):
+        if (
+            os.listdir(self.dataset_download_path)
+            and os.path.exists(self.images_path)
+            and os.path.exists(self.labels_path)
+        ):
             print("Dataset already downloaded")
             return
 
@@ -52,20 +56,22 @@ class DataDownloader:
             return
 
         print("Downloading labels...")
-        self.dataset.export_annotation_file(AnnotationFileType.YOLO, self.labels_path, use_id=True)
+        self.dataset.export_annotation_file(
+            AnnotationFileType.YOLO, self.labels_path, use_id=True
+        )
 
         print("Extracting labels...")
         # The .zip is in annotations_path/organization_id/annotations/*.zip. We need to extract it.
         for root, dirs, files in os.walk(self.labels_path):
             for file in files:
                 if file.endswith(".zip"):
-                    with zipfile.ZipFile(os.path.join(root, file), 'r') as zip_ref:
+                    with zipfile.ZipFile(os.path.join(root, file), "r") as zip_ref:
                         zip_ref.extractall(self.labels_path)
                     print(f"Labels extracted in {self.labels_path}")
                     break
 
         print("Deleting zip file...")
-        shutil.rmtree(os.path.join(f"{self.labels_path}/{settings.get('organization_id')}"))
+        shutil.rmtree(
+            os.path.join(f"{self.labels_path}/{settings.get('organization_id')}")
+        )
         print("Labels downloaded")
-
-

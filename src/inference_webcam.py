@@ -3,10 +3,12 @@ from enum import Enum
 
 from src.utils import get_model_device
 
+
 class InferenceMode(Enum):
     WEBCAM = 0
     IMAGE = 1
     VIDEO = 2
+
 
 def start_inference(mode: InferenceMode = InferenceMode.WEBCAM, path: str = None):
     model = YOLO("../weights/best.pt")

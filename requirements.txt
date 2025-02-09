@@ -2,3 +2,6 @@ ultralytics
 picsellia
 dynaconf
 opencv-python
+black
+flake8
+pre-commit
