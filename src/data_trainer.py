@@ -39,7 +39,7 @@ class DataTrainer:
             data=config_path,
             device=get_model_device(),
             imgsz=640,
-            epochs=200,
+            epochs=500,
             batch=8,
             close_mosaic=False,
             optimizer="adamW",
