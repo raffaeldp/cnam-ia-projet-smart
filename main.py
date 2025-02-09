@@ -1,7 +1,6 @@
 import argparse
 from uuid import UUID
 
-from pandas.core.interchange.dataframe_protocol import DataFrame
 from datetime import datetime
 from picsellia import Client
 from picsellia.types.enums import ExperimentStatus
@@ -11,10 +10,19 @@ from src.data_downloader import DataDownloader
 from src.data_postprocessor import DataPostprocessor
 from src.data_preprocessor import DataPreprocessor
 from src.data_trainer import DataTrainer
-from src.inference_webcam import start_inference, InferenceMode
+from src.inference import start_inference, InferenceMode
 
 
 def train():
+    """
+    Trains the model by performing the following steps:
+    1. Logs into Picsellia.
+    2. Creates a new experiment.
+    3. Downloads the dataset and annotations.
+    4. Preprocesses the data.
+    5. Trains the model.
+    6. Evaluates and saves the model to Picsellia.
+    """
     organization_id = UUID(settings.get("organization_id"))
     api_token = settings.get("api_token")
     dataset_uuid = settings.get("dataset_uuid")
@@ -61,15 +69,30 @@ def train():
 
 
 def infer_webcam():
+    """
+    Performs inference using the webcam.
+    """
     # Inference
     start_inference(InferenceMode.WEBCAM)
 
 
 def infer_image(path: str):
+    """
+    Performs inference on a given image.
+
+    Args:
+        path (str): The path to the image file.
+    """
     start_inference(InferenceMode.IMAGE, path)
 
 
 def infer_video(path: str):
+    """
+    Performs inference on a given video.
+
+    Args:
+        path (str): The path to the video file.
+    """
     start_inference(InferenceMode.VIDEO, path)
 
 

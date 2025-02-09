@@ -5,11 +5,29 @@ import os
 
 
 class DataPostprocessor:
+    """
+    Class to handle the postprocessing of data, including evaluation, saving, and uploading the model.
+
+    Attributes:
+        yolo (YOLO): The YOLO model used for evaluation and saving.
+        experiment (Experiment): The experiment instance for logging and uploading results.
+    """
+
     def __init__(self, experiment: Experiment, yolo: YOLO):
+        """
+        Initializes the DataPostprocessor with the given experiment and YOLO model.
+
+        Args:
+            experiment (Experiment): The experiment instance.
+            yolo (YOLO): The YOLO model instance.
+        """
         self.yolo = yolo
         self.experiment = experiment
 
     def eval(self):
+        """
+        Evaluates the YOLO model and logs the results to the experiment.
+        """
         print("Starting evaluation")
         results = self.yolo.val()
 
@@ -17,12 +35,21 @@ class DataPostprocessor:
             self.experiment.log(f"result_{key}", str(value), LogType.VALUE)
 
     def save(self):
+        """
+        Saves the YOLO model to a file named 'best.pt'.
+        """
         self.yolo.save("best.pt")
 
     def upload_to_picsellia(self, model: Model):
+        """
+        Uploads the saved YOLO model to Picsellia.
+
+        Args:
+            model (Model): The model instance to which the version will be uploaded.
+        """
         print("Saving model...")
 
-        # Si le fichier best.pt n'existe pas, on return
+        # If the file 'best.pt' does not exist, return
         if not os.path.exists("best.pt"):
             print("Error: best.pt not found")
             return
