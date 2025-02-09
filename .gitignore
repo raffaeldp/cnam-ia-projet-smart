@@ -3,10 +3,10 @@
 .DS_Store
 # Ignore dynaconf secret files
 .secrets.*
+weights
 
 dataset
 runs
-weights
 *.pt
 __pycache__
 src/__pycache__/*

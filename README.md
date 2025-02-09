@@ -3,7 +3,7 @@
 ## Commands
 
 ```bash
-# Create a new virtual environment -> already done
+# Create a new virtual environment
 python3.11 -m venv .venv
 ```
 
@@ -20,7 +20,9 @@ pip install -r requirements.txt
 ## Usage
 Create the .secrets.toml file in the root directory based on .secrets-example.toml and fill in the values.
 
-## Arguments
+Update settings.toml if running on a different dataset/project/model.
+
+## Program arguments
 ### Choose the pipeline to run
 `--train` to train the model
 `--infer` to use the model
@@ -37,3 +39,5 @@ python main.py --infer webcam
 python main.py --infer video --path path/to/video.mp4
 ```
 
+## Rapport
+[ici](./RAPPORT.md)

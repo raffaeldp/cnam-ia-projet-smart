@@ -16,6 +16,8 @@ Cependant, nous n'avons pas augmenté le nombre d'epochs, ce qui a limité l'am�
 du modèle. Cela suggère que nous aurions dû augmenter le nombre d'epochs pour compenser cette réduction
 de batch size.
 
+
+
 ### Comparaison environnements de training
 Nous avons expérimenté l'entraînement sur deux environnements matériels différents :
 
