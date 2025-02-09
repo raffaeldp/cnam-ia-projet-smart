@@ -25,7 +25,7 @@ def train():
     project = client.get_project(project_name)
     model = client.get_model_by_id(settings.get("model_id"))
 
-    experiment_name = "training_" + datetime.today().strftime('%Y_%m_%d_%H_%M_%S')
+    experiment_name = "training_" + datetime.today().strftime("%Y_%m_%d_%H_%M_%S")
     project_experiments = project.list_experiments()
     for experiment in project_experiments:
         if experiment.name == experiment_name:
@@ -64,21 +64,31 @@ def infer_webcam():
     # Inference
     start_inference(InferenceMode.WEBCAM)
 
+
 def infer_image(path: str):
     start_inference(InferenceMode.IMAGE, path)
+
 
 def infer_video(path: str):
     start_inference(InferenceMode.VIDEO, path)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Script pour entraîner ou exécuter l'inférence d'un modèle.")
+    parser = argparse.ArgumentParser(
+        description="Script pour entraîner ou exécuter l'inférence d'un modèle."
+    )
 
-    parser.add_argument("--train", action="store_true", help="Lancer l'entraînement du modèle")
+    parser.add_argument(
+        "--train", action="store_true", help="Lancer l'entraînement du modèle"
+    )
 
     # Inference options
-    parser.add_argument("--infer", choices=["webcam", "image", "video"], help="Mode d'inférence")
-    parser.add_argument("--path", type=str, help="Chemin du fichier (requis pour image et vidéo)")
+    parser.add_argument(
+        "--infer", choices=["webcam", "image", "video"], help="Mode d'inférence"
+    )
+    parser.add_argument(
+        "--path", type=str, help="Chemin du fichier (requis pour image et vidéo)"
+    )
 
     args = parser.parse_args()
 
@@ -99,5 +109,3 @@ if __name__ == "__main__":
                 print("Erreur: --path est requis pour l'inférence sur une vidéo.")
     else:
         print("Veuillez spécifier --train ou --infer [webcam/image/video].")
-
-
